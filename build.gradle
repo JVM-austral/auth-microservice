@@ -4,7 +4,11 @@ plugins {
 	id 'org.springframework.boot' version '3.5.6'
 	id 'io.spring.dependency-management' version '1.1.7'
 	id 'org.jetbrains.kotlin.plugin.jpa' version '1.9.25'
+	id 'jacoco'
+	id 'maven-publish'
+	id "org.jlleitschuh.gradle.ktlint" version "12.1.1"
 }
+
 
 group = 'ingsis'
 version = '0.0.1-SNAPSHOT'
@@ -45,4 +49,38 @@ allOpen {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+ktlint {
+	version.set("1.3.0")
+	android.set(false)
+	outputColorName.set("RED")
+	ignoreFailures.set(false)
+	filter {
+		exclude("**/build/**")
+		include("**/src/**/*.kt")
+	}
+}
+
+jacocoTestReport {
+	dependsOn test
+	reports {
+		xml.required = true
+		html.required = true
+	}
+}
+
+jacocoTestCoverageVerification {
+	dependsOn test
+	violationRules {
+		rule {
+			limit {
+				minimum = 0.0
+			}
+		}
+	}
+}
+
+tasks.named('check') {
+	dependsOn 'ktlintCheck', 'jacocoTestCoverageVerification'
 }
