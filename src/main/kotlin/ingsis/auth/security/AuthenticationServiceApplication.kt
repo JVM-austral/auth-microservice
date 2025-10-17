@@ -10,38 +10,31 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
-
 @RestController
 @SpringBootApplication
 class AuthenticationServiceApplication {
-
     @GetMapping("/")
-    fun index(): String {
-        return "I'm Alive!"
-    }
+    fun index(): String = "I'm Alive!"
 
     @GetMapping("/jwt")
-    fun jwt(@AuthenticationPrincipal jwt: Jwt): String {
-        return jwt.tokenValue
-    }
+    fun jwt(
+        @AuthenticationPrincipal jwt: Jwt,
+    ): String = jwt.tokenValue
 
     @GetMapping("/snippets")
-    fun getAllMessages(): String {
-        return "secret message"
-    }
+    fun getAllMessages(): String = "secret message"
 
     @GetMapping("/snippets/{id}")
-    fun getSingleMessage(@PathVariable id: String): String {
-        return "secret message $id"
-    }
+    fun getSingleMessage(
+        @PathVariable id: String,
+    ): String = "secret message $id"
 
     @PostMapping("/snippets")
-    fun createMessage(@RequestBody message: String?): String {
-        return String.format("Message was created. Content: %s", message)
-    }
+    fun createMessage(
+        @RequestBody message: String?,
+    ): String = String.format("Message was created. Content: %s", message)
 }
 
 fun main(args: Array<String>) {
     runApplication<AuthenticationServiceApplication>(*args)
 }
-
