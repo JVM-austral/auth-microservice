@@ -29,16 +29,16 @@ class OAuth2ResourceServerSecurityConfiguration(
         http
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("/ping")
-                    .permitAll()
                     .requestMatchers("/")
                     .permitAll()
                     .requestMatchers(GET, "/snippets")
-                    .hasAuthority("SCOPE_read:snippets")
+                    .authenticated()
                     .requestMatchers(GET, "/snippets/*")
-                    .hasAuthority("SCOPE_read:snippets")
+                    .authenticated()
                     .requestMatchers(POST, "/snippets")
-                    .hasAuthority("SCOPE_write:snippets")
+                    .authenticated()
+                    .requestMatchers(GET, "/scopedAuthenticate")
+                    .hasRole("read:snippets")
                     .anyRequest()
                     .authenticated()
             }.oauth2ResourceServer { it.jwt(withDefaults()) }
