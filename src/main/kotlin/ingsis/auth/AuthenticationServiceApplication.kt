@@ -1,4 +1,4 @@
-package ingsis.auth.security
+package ingsis.auth
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -20,6 +20,11 @@ class AuthenticationServiceApplication {
     fun jwt(
         @AuthenticationPrincipal jwt: Jwt,
     ): String = jwt.tokenValue
+
+    @GetMapping("/jwt/decode")
+    fun decodeJwt(@AuthenticationPrincipal jwt: Jwt): Map<String, String> {
+        return mapOf("userId" to jwt.subject)
+    }
 
     @GetMapping("/snippets")
     fun getAllMessages(): String = "secret message"
