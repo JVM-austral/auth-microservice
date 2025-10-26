@@ -22,9 +22,9 @@ class AuthenticationServiceApplication {
     ): String = jwt.tokenValue
 
     @GetMapping("/jwt/decode")
-    fun decodeJwt(@AuthenticationPrincipal jwt: Jwt): Map<String, String> {
-        return mapOf("userId" to jwt.subject)
-    }
+    fun decodeJwt(
+        @AuthenticationPrincipal jwt: Jwt,
+    ): Map<String, String> = mapOf("userId" to jwt.subject)
 
     @GetMapping("/snippets")
     fun getAllMessages(): String = "secret message"
