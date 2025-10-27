@@ -11,4 +11,6 @@ class UserService(
     fun findAll(): List<User> = userRepository.findAll()
 
     fun save(user: User): User = userRepository.save(user)
+
+    fun findById(id: String): User? = userRepository.findById(id).orElse(null)
 }
