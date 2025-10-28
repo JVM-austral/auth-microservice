@@ -5,6 +5,4 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/snippet-permissions")
-class SnippetPermissionValidateController(
-) {
-}
+class SnippetPermissionValidateController
