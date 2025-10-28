@@ -15,14 +15,14 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.util.UUID
 
-class SnippetPermissionsServiceTest {
+class SnippetPermissionGrantServiceTest {
     private lateinit var repository: SnippetPermissionsRepository
-    private lateinit var service: SnippetPermissionsService
+    private lateinit var service: SnippetPermissionGrantService
 
     @BeforeEach
     fun setup() {
         repository = mockk()
-        service = SnippetPermissionsService(repository)
+        service = SnippetPermissionGrantService(repository)
     }
 
     @Test

@@ -2,7 +2,7 @@ package ingsis.auth.controller
 
 import ingsis.auth.dto.SnippetPermissionRequest
 import ingsis.auth.entity.SnippetPermissions
-import ingsis.auth.service.SnippetPermissionsService
+import ingsis.auth.service.SnippetPermissionGrantService
 import jakarta.validation.Valid
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.oauth2.jwt.Jwt
@@ -14,24 +14,24 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/snippet-permissions")
-class SnippetPermissionsController(
-    private val snippetPermissionsService: SnippetPermissionsService,
+class SnippetPermissionGrantController(
+    private val snippetPermissionGrantService: SnippetPermissionGrantService,
 ) {
     @PostMapping("/grant-write-access")
     fun grantSnippetWriteAccess(
         @Valid @RequestBody snippetPermissionRequest: SnippetPermissionRequest,
         @AuthenticationPrincipal jwt: Jwt,
-    ): SnippetPermissions = snippetPermissionsService.grantSnippetWriteAccess(snippetPermissionRequest, jwt.subject)
+    ): SnippetPermissions = snippetPermissionGrantService.grantSnippetWriteAccess(snippetPermissionRequest, jwt.subject)
 
     @PostMapping("/grant-read-access")
     fun grantSnippetReadAccess(
         @Valid @RequestBody snippetPermissionRequest: SnippetPermissionRequest,
         @AuthenticationPrincipal jwt: Jwt,
-    ): SnippetPermissions = snippetPermissionsService.grantSnippetReadAccess(snippetPermissionRequest, jwt.subject)
+    ): SnippetPermissions = snippetPermissionGrantService.grantSnippetReadAccess(snippetPermissionRequest, jwt.subject)
 
     @DeleteMapping("/revoke-access")
     fun revokeSnippetAccess(
         @Valid @RequestBody snippetPermissionRequest: SnippetPermissionRequest,
         @AuthenticationPrincipal jwt: Jwt,
-    ): Boolean = snippetPermissionsService.revokeSnippetAccess(snippetPermissionRequest, jwt.subject)
+    ): Boolean = snippetPermissionGrantService.revokeSnippetAccess(snippetPermissionRequest, jwt.subject)
 }

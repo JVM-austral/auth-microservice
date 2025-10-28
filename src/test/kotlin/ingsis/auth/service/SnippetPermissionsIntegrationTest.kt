@@ -19,7 +19,7 @@ import java.util.UUID
 @ActiveProfiles("test")
 class SnippetPermissionsIntegrationTest(
     @Autowired val repository: SnippetPermissionsRepository,
-    @Autowired val service: SnippetPermissionsService,
+    @Autowired val service: SnippetPermissionGrantService,
 ) {
     @Test
     fun `should revoke existing snippet permission from database`() {
