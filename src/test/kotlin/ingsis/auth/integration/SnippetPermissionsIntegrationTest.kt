@@ -1,10 +1,11 @@
-package ingsis.auth.service
+package ingsis.auth.integration
 
 import ingsis.auth.common.Permissions
 import ingsis.auth.dto.SnippetPermissionRequest
 import ingsis.auth.entity.SnippetPermissions
 import ingsis.auth.exception.PermissionNotFoundException
 import ingsis.auth.repository.SnippetPermissionsRepository
+import ingsis.auth.service.SnippetPermissionGrantService
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
