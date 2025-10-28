@@ -5,14 +5,27 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class SnippetPermissionsRepository(
-    private val jpaRepo: SnippetPermissionsRepositoryInterface,
+    private val repository: SnippetPermissionsRepositoryInterface,
 ) {
-    fun create(snippetPermission: SnippetPermissions): SnippetPermissions =
-        jpaRepo.save(snippetPermission)
+    fun grantSnippetWriteAccess(snippetPermissions: SnippetPermissions): SnippetPermissions = repository.save(snippetPermissions)
 
-    fun findBySnippetId(snippetId: String): List<SnippetPermissions> =
-        jpaRepo.findBySnippetId(snippetId)
+    fun grantSnippetReadAccess(snippetPermissions: SnippetPermissions): SnippetPermissions = repository.save(snippetPermissions)
 
-    fun findByUserId(userId: String): List<SnippetPermissions> =
-        jpaRepo.findByUserId(userId)
+    fun revokeSnippetAccess(
+        snippetId: String,
+        userId: String,
+    ): Boolean {
+        val permission = repository.findBySnippetIdAndUserId(snippetId, userId) ?: return false
+        repository.delete(permission)
+        return true
+    }
+
+    fun findAll(): List<SnippetPermissions> = repository.findAll()
+
+    fun findBySnippetIdAndUserId(
+        snippetId: String,
+        userId: String,
+    ): SnippetPermissions? = repository.findBySnippetIdAndUserId(snippetId, userId)
+
+    fun findBySnippetId(snippetId: String): List<SnippetPermissions> = repository.findBySnippetId(snippetId)
 }

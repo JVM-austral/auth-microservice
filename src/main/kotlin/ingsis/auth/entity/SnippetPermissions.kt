@@ -1,15 +1,11 @@
 package ingsis.auth.entity
 
+import ingsis.auth.common.Permissions
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.Table
-
-enum class Permissions {
-    READ,
-    WRITE,
-}
 
 @Entity
 @Table(name = "snippet_permissions")
