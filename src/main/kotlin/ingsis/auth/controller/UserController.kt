@@ -25,5 +25,5 @@ class UserController(
     @GetMapping("/{id}")
     fun getUserById(
         @PathVariable id: String,
-    ): User? = userService.findById(id)
+    ): User = userService.findById(id)
 }

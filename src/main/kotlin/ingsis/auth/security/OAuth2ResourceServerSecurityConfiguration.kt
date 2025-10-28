@@ -3,8 +3,6 @@ package ingsis.auth.security
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod.GET
-import org.springframework.http.HttpMethod.POST
 import org.springframework.security.config.Customizer.withDefaults
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -14,6 +12,7 @@ import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.security.oauth2.jwt.JwtDecoder
 import org.springframework.security.oauth2.jwt.JwtValidators
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder
+import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter
 import org.springframework.security.web.SecurityFilterChain
 
 @Configuration
@@ -23,29 +22,19 @@ class OAuth2ResourceServerSecurityConfiguration(
     val audience: String,
     @Value("\${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
     val issuer: String,
+    val userSyncFilter: UserSyncFilter,
 ) {
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("/ping")
-                    .permitAll()
                     .requestMatchers("/")
                     .permitAll()
-                    .requestMatchers(GET, "/users")
-                    .permitAll()
-                    .requestMatchers(POST, "/users")
-                    .permitAll()
-                    .requestMatchers(GET, "/snippet-permissions/**")
-                    .permitAll()
-                    .requestMatchers(POST, "/snippet-permissions/**")
-                    .permitAll()
-                    .requestMatchers(GET, "/jwt/decode")
-                    .authenticated()
                     .anyRequest()
                     .authenticated()
             }.oauth2ResourceServer { it.jwt(withDefaults()) }
+            .addFilterAfter(userSyncFilter, BearerTokenAuthenticationFilter::class.java)
             .cors {
                 it.disable()
             }.csrf {
