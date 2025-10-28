@@ -1,5 +1,6 @@
 package ingsis.auth.repository
 
+import ingsis.auth.common.Permissions
 import ingsis.auth.entity.SnippetPermissions
 import org.springframework.stereotype.Repository
 
@@ -28,4 +29,20 @@ class SnippetPermissionsRepository(
     ): SnippetPermissions? = repository.findBySnippetIdAndUserId(snippetId, userId)
 
     fun findBySnippetId(snippetId: String): List<SnippetPermissions> = repository.findBySnippetId(snippetId)
+
+    fun userHasWriteAccess(
+        snippetId: String,
+        userId: String,
+    ): Boolean {
+        val permission = repository.findBySnippetIdAndUserId(snippetId, userId) ?: return false
+        return permission.permission == Permissions.WRITE
+    }
+
+    fun userHasReadAccess(
+        snippetId: String,
+        userId: String,
+    ): Boolean {
+        val permission = repository.findBySnippetIdAndUserId(snippetId, userId) ?: return false
+        return permission.permission == Permissions.READ || permission.permission == Permissions.WRITE
+    }
 }
