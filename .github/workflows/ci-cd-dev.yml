@@ -82,4 +82,4 @@ jobs:
           key: ${{ secrets.VM_SSH_KEY }}
           script: |
             cd ~/infrastructure
-            ./deploy.sh
+            ./deploy.dev.sh
