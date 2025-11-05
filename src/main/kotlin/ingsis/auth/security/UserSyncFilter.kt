@@ -25,10 +25,9 @@ class UserSyncFilter(
         if (authentication?.principal is Jwt) {
             val jwt = authentication.principal as Jwt
             val userId = jwt.subject
-            val name = jwt.getClaim<String>("name")
 
             if (!userRepository.existsById(userId)) {
-                userService.save(User(id = userId, name = name ?: "juanito"))
+                userService.save(User(id = userId))
             }
         }
 
