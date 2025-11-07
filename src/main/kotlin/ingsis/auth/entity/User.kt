@@ -9,5 +9,4 @@ import jakarta.persistence.Table
 data class User(
     @Id
     val id: String,
-    val name: String,
 )
