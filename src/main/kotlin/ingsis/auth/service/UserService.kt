@@ -23,6 +23,4 @@ class UserService(
         userRepository.findById(id).orElseThrow {
             UserNotFoundException("User not found with id: $id")
         }
-
-    fun findByIdOrNull(id: String): User? = userRepository.findById(id).orElse(null)
 }

@@ -47,4 +47,28 @@ class GlobalExceptionHandler {
                     message = ex.message ?: "User not found",
                 ),
             )
+
+    @ExceptionHandler(FriendshipAlreadyExistsException::class)
+    fun handleFriendshipAlreadyExists(ex: FriendshipAlreadyExistsException): ResponseEntity<ErrorResponse> =
+        ResponseEntity
+            .status(HttpStatus.CONFLICT)
+            .body(ErrorResponse(message = ex.message ?: "The friendship already exists"))
+
+    @ExceptionHandler(FriendshipNotFoundException::class)
+    fun handleFriendshipNotFound(ex: FriendshipNotFoundException): ResponseEntity<ErrorResponse> =
+        ResponseEntity
+            .status(HttpStatus.NOT_FOUND)
+            .body(ErrorResponse(message = ex.message ?: "The friendship was not found"))
+
+    @ExceptionHandler(SelfFriendshipNotAllowedException::class)
+    fun handleSelfFriendship(ex: SelfFriendshipNotAllowedException): ResponseEntity<ErrorResponse> =
+        ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(ErrorResponse(message = ex.message ?: "Cannot befriend oneself"))
+
+    @ExceptionHandler(InvalidFriendIdException::class)
+    fun handleInvalidFriendId(ex: InvalidFriendIdException): ResponseEntity<ErrorResponse> =
+        ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(ErrorResponse(message = ex.message ?: "Invalid friend ID"))
 }
