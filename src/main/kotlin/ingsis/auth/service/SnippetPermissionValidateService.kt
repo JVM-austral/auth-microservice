@@ -20,10 +20,11 @@ class SnippetPermissionValidateService(
         val targetUserId = resolveUserId(snippetPermissionRequest, requestingUserId)
         log.debug("Validating write access for user $targetUserId on snippet ${snippetPermissionRequest.snippetId}")
 
-        val hasAccess = snippetPermissionsRepository.userHasWriteAccess(
-            snippetPermissionRequest.snippetId,
-            targetUserId,
-        )
+        val hasAccess =
+            snippetPermissionsRepository.userHasWriteAccess(
+                snippetPermissionRequest.snippetId,
+                targetUserId,
+            )
 
         return if (hasAccess) {
             log.info("Write access granted for user $targetUserId on snippet ${snippetPermissionRequest.snippetId}")

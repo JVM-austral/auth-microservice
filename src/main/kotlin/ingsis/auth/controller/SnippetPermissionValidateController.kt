@@ -17,6 +17,7 @@ class SnippetPermissionValidateController(
     private val validateService: SnippetPermissionValidateService,
 ) {
     private val log = org.slf4j.LoggerFactory.getLogger(SnippetPermissionValidateController::class.java)
+
     @PostMapping("/validate-write")
     fun validateWriteAccess(
         @RequestBody request: SnippetPermissionRequest,

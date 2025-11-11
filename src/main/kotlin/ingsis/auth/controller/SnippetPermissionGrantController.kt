@@ -18,6 +18,7 @@ class SnippetPermissionGrantController(
     private val snippetPermissionGrantService: SnippetPermissionGrantService,
 ) {
     private val log = org.slf4j.LoggerFactory.getLogger(SnippetPermissionGrantController::class.java)
+
     @PostMapping("/grant-write-access")
     fun grantSnippetWriteAccess(
         @Valid @RequestBody snippetPermissionRequest: SnippetPermissionRequest,
