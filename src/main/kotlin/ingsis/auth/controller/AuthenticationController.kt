@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/authentication")
 class AuthenticationController {
     private val log = org.slf4j.LoggerFactory.getLogger(AuthenticationController::class.java)
+
     @GetMapping("/validate-user")
     fun validateUser(
         @AuthenticationPrincipal jwt: Jwt,

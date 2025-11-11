@@ -16,6 +16,7 @@ class SnippetPermissionGrantService(
     private val snippetPermissionsRepository: SnippetPermissionsRepository,
 ) {
     private val log = org.slf4j.LoggerFactory.getLogger(SnippetPermissionGrantService::class.java)
+
     fun grantSnippetWriteAccess(
         snippetPermissionRequest: SnippetPermissionRequest,
         requestingUserId: String,
@@ -26,12 +27,13 @@ class SnippetPermissionGrantService(
         validateUserCanGrantPermission(snippetPermissionRequest.snippetId, requestingUserId)
         validatePermissionDoesNotExist(snippetPermissionRequest.snippetId, targetUserId)
 
-        val snippetPermission = SnippetPermissions(
-            id = UUID.randomUUID().toString(),
-            snippetId = snippetPermissionRequest.snippetId,
-            userId = targetUserId,
-            permission = Permissions.WRITE,
-        )
+        val snippetPermission =
+            SnippetPermissions(
+                id = UUID.randomUUID().toString(),
+                snippetId = snippetPermissionRequest.snippetId,
+                userId = targetUserId,
+                permission = Permissions.WRITE,
+            )
 
         val result = snippetPermissionsRepository.grantSnippetWriteAccess(snippetPermission)
         log.info("Successfully granted WRITE access to user $targetUserId for snippet ${snippetPermissionRequest.snippetId}")

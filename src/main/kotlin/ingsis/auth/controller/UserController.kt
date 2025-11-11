@@ -16,6 +16,7 @@ class UserController(
     private val userService: UserService,
 ) {
     private val log = LoggerFactory.getLogger(UserController::class.java)
+
     @GetMapping
     fun getAll(): List<User> {
         log.info("Fetching all users")
@@ -25,7 +26,7 @@ class UserController(
     @PostMapping
     fun createUser(
         @RequestBody user: User,
-    ): User{
+    ): User {
         log.info("Creating user with id: ${user.id}")
         return userService.save(user)
     }
