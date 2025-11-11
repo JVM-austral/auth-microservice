@@ -1,11 +1,6 @@
 package ingsis.auth.service
 
 import ingsis.auth.dto.UserSubjectDto
-import ingsis.auth.entity.Friend
-import ingsis.auth.exception.FriendshipAlreadyExistsException
-import ingsis.auth.exception.InvalidFriendIdException
-import ingsis.auth.exception.SelfFriendshipNotAllowedException
-import ingsis.auth.repository.FriendsRepository
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

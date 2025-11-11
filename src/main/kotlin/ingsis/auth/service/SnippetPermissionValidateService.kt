@@ -4,23 +4,29 @@ import ingsis.auth.dto.PermissionValidationResponse
 import ingsis.auth.dto.SnippetPermissionRequest
 import ingsis.auth.exception.UnauthorizedPermissionActionException
 import ingsis.auth.repository.SnippetPermissionsRepository
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
 class SnippetPermissionValidateService(
     private val snippetPermissionsRepository: SnippetPermissionsRepository,
 ) {
+    private val log = LoggerFactory.getLogger(SnippetPermissionValidateService::class.java)
+
     fun validateSnippetWriteAccess(
         snippetPermissionRequest: SnippetPermissionRequest,
         requestingUserId: String,
     ): PermissionValidationResponse {
         val targetUserId = resolveUserId(snippetPermissionRequest, requestingUserId)
-        val hasAccess =
-            snippetPermissionsRepository.userHasWriteAccess(
-                snippetPermissionRequest.snippetId,
-                targetUserId,
-            )
+        log.debug("Validating write access for user $targetUserId on snippet ${snippetPermissionRequest.snippetId}")
+
+        val hasAccess = snippetPermissionsRepository.userHasWriteAccess(
+            snippetPermissionRequest.snippetId,
+            targetUserId,
+        )
+
         return if (hasAccess) {
+            log.info("Write access granted for user $targetUserId on snippet ${snippetPermissionRequest.snippetId}")
             PermissionValidationResponse(true)
         } else {
             throw UnauthorizedPermissionActionException(
@@ -40,6 +46,7 @@ class SnippetPermissionValidateService(
                 targetUserId,
             )
         return if (hasAccess) {
+            log.info("Read access granted for user $targetUserId on snippet ${snippetPermissionRequest.snippetId}")
             PermissionValidationResponse(true)
         } else {
             throw UnauthorizedPermissionActionException(

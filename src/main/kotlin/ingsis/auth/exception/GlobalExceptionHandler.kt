@@ -8,67 +8,57 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
+    private val log = org.slf4j.LoggerFactory.getLogger(GlobalExceptionHandler::class.java)
+
     @ExceptionHandler(PermissionAlreadyExistsException::class)
-    fun handlePermissionAlreadyExists(ex: PermissionAlreadyExistsException): ResponseEntity<ErrorResponse> =
-        ResponseEntity
+    fun handlePermissionAlreadyExists(ex: PermissionAlreadyExistsException): ResponseEntity<ErrorResponse> {
+        log.warn("Permission already exists: ${ex.message}")
+        return ResponseEntity
             .status(HttpStatus.CONFLICT)
             .body(ErrorResponse(ex.message ?: "Permission already exists"))
+    }
 
     @ExceptionHandler(UnauthorizedPermissionActionException::class)
-    fun handleUnauthorizedAction(ex: UnauthorizedPermissionActionException): ResponseEntity<ErrorResponse> =
-        ResponseEntity
+    fun handleUnauthorizedAction(ex: UnauthorizedPermissionActionException): ResponseEntity<ErrorResponse> {
+        log.warn("Unauthorized action attempted: ${ex.message}")
+        return ResponseEntity
             .status(HttpStatus.FORBIDDEN)
             .body(ErrorResponse(ex.message ?: "Unauthorized action"))
+    }
 
     @ExceptionHandler(PermissionNotFoundException::class)
-    fun handlePermissionNotFound(ex: PermissionNotFoundException): ResponseEntity<ErrorResponse> =
-        ResponseEntity
+    fun handlePermissionNotFound(ex: PermissionNotFoundException): ResponseEntity<ErrorResponse> {
+        log.warn("Permission not found: ${ex.message}")
+        return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
             .body(ErrorResponse(ex.message ?: "Permission not found"))
+    }
 
     @ExceptionHandler(SelfRevocationNotAllowedException::class)
-    fun handleSelfRevocation(ex: SelfRevocationNotAllowedException): ResponseEntity<ErrorResponse> =
-        ResponseEntity
+    fun handleSelfRevocation(ex: SelfRevocationNotAllowedException): ResponseEntity<ErrorResponse> {
+        log.warn("Self-revocation attempted: ${ex.message}")
+        return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
             .body(ErrorResponse(ex.message ?: "Cannot revoke own permissions"))
+    }
 
     @ExceptionHandler(UserAlreadyExistsException::class)
-    fun handleUserAlreadyExists(ex: UserAlreadyExistsException): ResponseEntity<ErrorResponse> =
-        ResponseEntity
+    fun handleUserAlreadyExists(ex: UserAlreadyExistsException): ResponseEntity<ErrorResponse> {
+        log.warn("User already exists: ${ex.message}")
+        return ResponseEntity
             .status(HttpStatus.CONFLICT)
             .body(ErrorResponse(message = ex.message ?: "User already exists"))
+    }
 
     @ExceptionHandler(UserNotFoundException::class)
-    fun handleUserNotFound(ex: UserNotFoundException): ResponseEntity<ErrorResponse> =
-        ResponseEntity
+    fun handleUserNotFound(ex: UserNotFoundException): ResponseEntity<ErrorResponse> {
+        log.warn("User not found: ${ex.message}")
+        return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
             .body(
                 ErrorResponse(
                     message = ex.message ?: "User not found",
                 ),
             )
-
-    @ExceptionHandler(FriendshipAlreadyExistsException::class)
-    fun handleFriendshipAlreadyExists(ex: FriendshipAlreadyExistsException): ResponseEntity<ErrorResponse> =
-        ResponseEntity
-            .status(HttpStatus.CONFLICT)
-            .body(ErrorResponse(message = ex.message ?: "The friendship already exists"))
-
-    @ExceptionHandler(FriendshipNotFoundException::class)
-    fun handleFriendshipNotFound(ex: FriendshipNotFoundException): ResponseEntity<ErrorResponse> =
-        ResponseEntity
-            .status(HttpStatus.NOT_FOUND)
-            .body(ErrorResponse(message = ex.message ?: "The friendship was not found"))
-
-    @ExceptionHandler(SelfFriendshipNotAllowedException::class)
-    fun handleSelfFriendship(ex: SelfFriendshipNotAllowedException): ResponseEntity<ErrorResponse> =
-        ResponseEntity
-            .status(HttpStatus.BAD_REQUEST)
-            .body(ErrorResponse(message = ex.message ?: "Cannot befriend oneself"))
-
-    @ExceptionHandler(InvalidFriendIdException::class)
-    fun handleInvalidFriendId(ex: InvalidFriendIdException): ResponseEntity<ErrorResponse> =
-        ResponseEntity
-            .status(HttpStatus.BAD_REQUEST)
-            .body(ErrorResponse(message = ex.message ?: "Invalid friend ID"))
+    }
 }

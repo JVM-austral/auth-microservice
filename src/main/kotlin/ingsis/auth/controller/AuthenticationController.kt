@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/authentication")
 class AuthenticationController {
+    private val log = org.slf4j.LoggerFactory.getLogger(AuthenticationController::class.java)
     @GetMapping("/validate-user")
     fun validateUser(
         @AuthenticationPrincipal jwt: Jwt,
-    ): UserSubjectDto =
-        UserSubjectDto(
-            subject = jwt.subject,
-        )
+    ): UserSubjectDto {
+        log.info("Validating user with subject: ${jwt.subject}")
+        return UserSubjectDto(jwt.subject)
+    }
 }

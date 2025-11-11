@@ -15,21 +15,27 @@ import java.util.UUID
 class SnippetPermissionGrantService(
     private val snippetPermissionsRepository: SnippetPermissionsRepository,
 ) {
+    private val log = org.slf4j.LoggerFactory.getLogger(SnippetPermissionGrantService::class.java)
     fun grantSnippetWriteAccess(
         snippetPermissionRequest: SnippetPermissionRequest,
         requestingUserId: String,
     ): SnippetPermissions {
         val targetUserId = resolveUserId(snippetPermissionRequest, requestingUserId)
+        log.info("User $requestingUserId attempting to grant WRITE access to user $targetUserId for snippet ${snippetPermissionRequest.snippetId}")
+
         validateUserCanGrantPermission(snippetPermissionRequest.snippetId, requestingUserId)
         validatePermissionDoesNotExist(snippetPermissionRequest.snippetId, targetUserId)
-        val snippetPermission =
-            SnippetPermissions(
-                id = UUID.randomUUID().toString(),
-                snippetId = snippetPermissionRequest.snippetId,
-                userId = targetUserId,
-                permission = Permissions.WRITE,
-            )
-        return snippetPermissionsRepository.grantSnippetWriteAccess(snippetPermission)
+
+        val snippetPermission = SnippetPermissions(
+            id = UUID.randomUUID().toString(),
+            snippetId = snippetPermissionRequest.snippetId,
+            userId = targetUserId,
+            permission = Permissions.WRITE,
+        )
+
+        val result = snippetPermissionsRepository.grantSnippetWriteAccess(snippetPermission)
+        log.info("Successfully granted WRITE access to user $targetUserId for snippet ${snippetPermissionRequest.snippetId}")
+        return result
     }
 
     fun grantSnippetReadAccess(
@@ -46,7 +52,9 @@ class SnippetPermissionGrantService(
                 userId = targetUserId,
                 permission = Permissions.READ,
             )
-        return snippetPermissionsRepository.grantSnippetReadAccess(snippetPermission)
+        val result = snippetPermissionsRepository.grantSnippetReadAccess(snippetPermission)
+        log.info("Successfully granted READ access to user $targetUserId for snippet ${snippetPermissionRequest.snippetId}")
+        return result
     }
 
     fun revokeSnippetAccess(
@@ -61,7 +69,9 @@ class SnippetPermissionGrantService(
             )
         }
         validatePermissionExists(snippetPermissionRequest.snippetId, targetUserId)
-        return snippetPermissionsRepository.revokeSnippetAccess(snippetPermissionRequest.snippetId, targetUserId)
+        val result = snippetPermissionsRepository.revokeSnippetAccess(snippetPermissionRequest.snippetId, targetUserId)
+        log.info("Successfully revoked access for user $targetUserId on snippet ${snippetPermissionRequest.snippetId}")
+        return result
     }
 
     private fun resolveUserId(

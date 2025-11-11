@@ -16,15 +16,22 @@ import org.springframework.web.bind.annotation.RestController
 class SnippetPermissionValidateController(
     private val validateService: SnippetPermissionValidateService,
 ) {
+    private val log = org.slf4j.LoggerFactory.getLogger(SnippetPermissionValidateController::class.java)
     @PostMapping("/validate-write")
     fun validateWriteAccess(
         @RequestBody request: SnippetPermissionRequest,
         @AuthenticationPrincipal jwt: Jwt,
-    ): PermissionValidationResponse = validateService.validateSnippetWriteAccess(request, jwt.subject)
+    ): PermissionValidationResponse {
+        log.info("Validating write access for user: ${jwt.subject} on snippet: ${request.snippetId}")
+        return validateService.validateSnippetWriteAccess(request, jwt.subject)
+    }
 
     @PostMapping("/validate-read-access")
     fun validateSnippetReadAccess(
         @AuthenticationPrincipal jwt: Jwt,
         @Valid @RequestBody snippetPermissionRequest: SnippetPermissionRequest,
-    ): PermissionValidationResponse = validateService.validateSnippetReadAccess(snippetPermissionRequest, jwt.subject)
+    ): PermissionValidationResponse {
+        log.info("Validating read access for user: ${jwt.subject} on snippet: ${snippetPermissionRequest.snippetId}")
+        return validateService.validateSnippetReadAccess(snippetPermissionRequest, jwt.subject)
+    }
 }
