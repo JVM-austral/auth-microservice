@@ -6,6 +6,8 @@ import ingsis.auth.service.SnippetPermissionValidateService
 import jakarta.validation.Valid
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.oauth2.jwt.Jwt
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -34,5 +36,14 @@ class SnippetPermissionValidateController(
     ): PermissionValidationResponse {
         log.info("Validating read access for user: ${jwt.subject} on snippet: ${snippetPermissionRequest.snippetId}")
         return validateService.validateSnippetReadAccess(snippetPermissionRequest, jwt.subject)
+    }
+
+    @GetMapping("/shared-snippets/{userId}")
+    fun getSharedSnippets(
+        @AuthenticationPrincipal jwt: Jwt,
+        @PathVariable userId: String,
+    ): List<String> {
+        log.info("Fetching shared snippets for user: $userId requested by: ${jwt.subject}")
+        return validateService.getSharedSnippets(userId)
     }
 }

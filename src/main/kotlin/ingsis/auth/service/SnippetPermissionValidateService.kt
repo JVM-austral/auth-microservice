@@ -56,6 +56,13 @@ class SnippetPermissionValidateService(
         }
     }
 
+    fun getSharedSnippets(
+        userId: String,
+    ): List<String> {
+        log.debug("Fetching shared snippets for user $userId")
+        return snippetPermissionsRepository.getSharedSnippetIdsByUserId(userId)
+    }
+
     private fun resolveUserId(
         snippetPermissionRequest: SnippetPermissionRequest,
         requestingUserId: String,
