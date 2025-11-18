@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 @Service
 class UserService(
     private val userRepository: UserRepository,
-    private val auth0Service: Auth0Service,
+    private val OAuthService: OAuthService,
 ) {
     private val log = LoggerFactory.getLogger(UserService::class.java)
 
@@ -61,7 +61,7 @@ class UserService(
     }
 
     private fun mapToUserForResponse(user: User): UserForResponse {
-        val email = auth0Service.getUserEmail(user.id)
+        val email = OAuthService.getUserEmail(user.id)
         log.info("Mapping User entity to UserForResponse for user id: ${user.id} with name: $email")
         return UserForResponse(
             id = user.id,
