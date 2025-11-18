@@ -8,7 +8,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 @Service
-class Auth0Service(
+class OAuthService(
     @Value("\${auth0.domain}")
     private val domain: String,
     @Value("\${auth0.client-id}")
