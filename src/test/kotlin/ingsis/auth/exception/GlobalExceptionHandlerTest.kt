@@ -1,6 +1,5 @@
 package ingsis.auth.exception
 
-import ingsis.auth.dto.error.ErrorResponse
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -16,7 +15,6 @@ class GlobalExceptionHandlerTest {
 
     @Test
     fun `handlePermissionAlreadyExists should return CONFLICT status with error message`() {
-
         val errorMessage = "Permission already exists for this resource"
         val exception = PermissionAlreadyExistsException(errorMessage)
 
@@ -28,7 +26,6 @@ class GlobalExceptionHandlerTest {
 
     @Test
     fun `handleUnauthorizedAction should return FORBIDDEN status with error message`() {
-
         val errorMessage = "User does not have permission to perform this action"
         val exception = UnauthorizedPermissionActionException(errorMessage)
 
@@ -40,7 +37,6 @@ class GlobalExceptionHandlerTest {
 
     @Test
     fun `handlePermissionNotFound should return NOT_FOUND status with error message`() {
-
         val errorMessage = "Permission with id 123 not found"
         val exception = PermissionNotFoundException(errorMessage)
 
@@ -63,7 +59,6 @@ class GlobalExceptionHandlerTest {
 
     @Test
     fun `handleUserAlreadyExists should return CONFLICT status with error message`() {
-
         val errorMessage = "User with email test@example.com already exists"
         val exception = UserAlreadyExistsException(errorMessage)
 
@@ -75,7 +70,6 @@ class GlobalExceptionHandlerTest {
 
     @Test
     fun `handleUserNotFound should return NOT_FOUND status with error message`() {
-
         val errorMessage = "User with id 456 not found"
         val exception = UserNotFoundException(errorMessage)
 
