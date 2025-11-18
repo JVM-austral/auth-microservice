@@ -1,5 +1,6 @@
 package ingsis.auth.controller
 
+import ingsis.auth.dto.PaginatedUserResponse
 import ingsis.auth.entity.User
 import ingsis.auth.service.UserService
 import org.slf4j.LoggerFactory
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -21,6 +23,20 @@ class UserController(
     fun getAll(): List<User> {
         log.info("Fetching all users")
         return userService.findAll()
+    }
+
+    @GetMapping("/paginated")
+    fun getAll(
+        @RequestParam(value = "page", defaultValue = "0") page: Int,
+        @RequestParam(value = "page_size", defaultValue = "10") size: Int,
+        @RequestParam(required = false) filter: String?,
+    ): PaginatedUserResponse {
+        log.info("Fetching all users")
+        return userService.findPaginatedUserWithNameFilter(
+            filter = filter,
+            page = page,
+            pageSize = size,
+        )
     }
 
     @PostMapping

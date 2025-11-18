@@ -1,5 +1,10 @@
 auth0:
   audience: ${AUTH0_AUDIENCE:https://auth-microservice/api}
+  client-id: ${AUTH0_CLIENT_ID}
+  client-secret: ${AUTH0_CLIENT_SECRET}
+  domain: ${AUTH0_DOMAIN}
+  management-api:
+    audience: ${AUTH0_MANAGEMENT_API_AUDIENCE}
 spring:
   application:
     name: resource-service-with-auth-example
